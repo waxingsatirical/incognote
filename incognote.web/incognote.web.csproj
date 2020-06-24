@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\incognote.dal\incognote.dal.csproj" />
+    <ProjectReference Include="..\incognote.server\incognote.server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

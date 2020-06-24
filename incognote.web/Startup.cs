@@ -1,3 +1,4 @@
+using incognote.server;
 using incognote.web.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +27,10 @@ namespace incognote.web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddSingleton<IRoomProvider, RoomProvider>();
+
             services.AddSignalR();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

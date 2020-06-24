@@ -13,10 +13,12 @@ namespace incognote.server
         void Subscribe(string id, Action<string, string> callback);
     }
 
+    public interface IIncomingService : IIncomingServiceCaller, IIncomingServiceListener { };
+
     /// <summary>
     /// This should take the subscriptions as a constructor
     /// </summary>
-    public class IncomingService : IIncomingServiceCaller, IIncomingServiceListener
+    public class IncomingService : IIncomingService
     {
         private readonly Dictionary<string, List<Action<string, string>>> callbacks = new Dictionary<string, List<Action<string, string>>>();
         public void Subscribe(string id, Action<string, string> callback)

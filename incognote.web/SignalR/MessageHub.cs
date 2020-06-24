@@ -28,6 +28,13 @@ namespace incognote.web.Hubs
 
             await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
         }
+        [HubMethodName(Consts.JoinString)]
+        public async Task Join()
+        {
+            var room = roomProvider.ExistingRoom(Context.ConnectionId);
+
+            await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
+        }
 
     }
 }

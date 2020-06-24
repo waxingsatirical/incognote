@@ -1,26 +1,45 @@
 ﻿using incognote.server;
+using System;
+using System.Collections.Generic;
 
 namespace incognote.sticklets
 {
-    public class RoomForSticklets
+    public class RoomForSticklets : IIncomingServiceCaller
     {
-        private readonly IRoom room;
+        private readonly HashSet<string> connectionIds = new HashSet<string>();
+        private readonly IIncomingService incomingService;
+        private readonly IMessageService messageService;
+        private readonly IActionService actionService;
+        private Game game;
 
         public RoomForSticklets(
-            IRoom room
+            IIncomingService incomingService,
+            IMessageService messageService,
+            IActionService actionService
             )
         {
-            this.room = room;
+            GroupName = Guid.NewGuid().ToString();
+            this.incomingService = incomingService;
+            this.messageService = messageService;
+            this.actionService = actionService;
         }
 
-        public void StartGame(string connectionId)
+        public string GroupName { get; }
+
+        public void Join(string connectionId)
         {
-            room.ToGroup("New game started.");
+            connectionIds.Add(connectionId);
+            actionService.SetInitialActions(connectionId, game != null);
         }
 
-        public void SubmitGuess(string connectionId, int guess)
+        public void StartGame()
         {
-
+            game = new Game(GroupName, actionService, messageService, connectionIds);
+            game.Start();
+        }
+        public bool PerformAction(string id, string connectionId, string payload)
+        {
+            return incomingService.PerformAction(id, connectionId, payload);
         }
     }
 }

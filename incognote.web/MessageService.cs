@@ -15,23 +15,27 @@ namespace incognote.web
         }
         public void SetAction(string connectionId, Action action)
         {
-            this.hubContext.Clients.Client(connectionId).SendAsync(Consts.SetActionString, action);
+            hubContext.Clients.Client(connectionId).SendAsync(Consts.SetActionString, action);
         }
 
         public void SetActionForGroup(string groupName, Action action)
         {
-            this.hubContext.Clients.Group(groupName).SendAsync(Consts.SetActionString, action);
+            hubContext.Clients.Group(groupName).SendAsync(Consts.SetActionString, action);
         }
 
         public void SetActionsForGroup(string groupName, IEnumerable<Action> actions)
         {
-            this.hubContext.Clients.Group(groupName).SendAsync(Consts.SetActionString, actions);
+            hubContext.Clients.Group(groupName).SendAsync(Consts.SetActionsString, actions);
+        }
+        public void SetActions(string connectionId, IEnumerable<Action> actions)
+        {
+            hubContext.Clients.Client(connectionId).SendAsync(Consts.SetActionsString, actions);
         }
 
         public void ToGroup(string groupName, string message)
         {
             var msg = new Message() { Payload = message };
-            this.hubContext.Clients.Group(groupName).SendAsync(Consts.MessageReceivedString, msg);
+            hubContext.Clients.Group(groupName).SendAsync(Consts.MessageReceivedString, msg);
         }
 
 

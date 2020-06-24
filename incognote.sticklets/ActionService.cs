@@ -7,7 +7,13 @@ using Action = incognote.server.Action;
 
 namespace incognote.sticklets
 {
-    public class ActionService
+    public interface IActionService
+    {
+        void SetInitialActionsForGroup(string groupName, bool gameInProgress);
+        void SetInitialActions(string connectionId, bool gameInProgress);
+    }
+
+    public class ActionService : IActionService
     {
         private readonly IMessageService messageService;
 
@@ -15,11 +21,18 @@ namespace incognote.sticklets
         {
             this.messageService = messageService;
         }
-        public void SetInitialActions(string groupName)
+        public void SetInitialActionsForGroup(string groupName, bool gameInProgress)
         {
-            var actions = new[] { ActionStartGame() };
+            var actions = new[] { ActionStartGame(gameInProgress) };
             messageService.SetActionsForGroup(groupName, actions);
         }
-        private Action ActionStartGame(bool enabled = true) => new Action("startGame", "Start Game", enabled);
+        public void SetInitialActions(string connectionId, bool gameInProgress)
+        {
+            var actions = new[] { ActionStartGame(!gameInProgress) };
+            messageService.SetActions(connectionId, actions);
+        }
+        private Action ActionStartGame(bool enabled) => new Action("startGame", "Start Game", enabled);
     }
+
+
 }

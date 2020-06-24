@@ -14,6 +14,8 @@ namespace incognote.web
         [TsProperty(Constant = true)]
         public const string MessageReceivedString = nameof(MessageReceivedString);
         [TsProperty(Constant = true)]
+        public const string JoinString = nameof(JoinString);
+        [TsProperty(Constant = true)]
         public const string SendMesssageString = nameof(SendMesssageString);
         [TsProperty(Constant = true)]
         public const string SetActionsString = nameof(SetActionsString);

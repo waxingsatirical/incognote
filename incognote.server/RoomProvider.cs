@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace incognote.server
 {
-
     public interface IRoomProvider
     {
         IRoom ExistingRoom(string connectionId);
@@ -14,17 +13,22 @@ namespace incognote.server
     public interface IRoom
     {
         public string GroupName { get; }
+        public void ToGroup(string message);
     }
     public class RoomProvider : IRoomProvider
     {
         private readonly List<RoomBase> rooms;
         private readonly object roomsLocker = new object();
         private readonly IHubContext<Hub> hubContext;
+        private readonly IMessageService messageService;
 
-        public RoomProvider(IHubContext<Hub> hubContext)
+        public RoomProvider(
+            IHubContext<Hub> hubContext,
+            IMessageService messageService)
         {
             rooms = new List<RoomBase>();
             this.hubContext = hubContext;
+            this.messageService = messageService;
         }
         public IRoom JoinRoom(string connectionId)
         {
@@ -34,7 +38,7 @@ namespace incognote.server
                 var joinableName = joinable?.GroupName ?? Guid.NewGuid().ToString();
                 if (joinable == null) //create new room
                 {
-                    joinable = new RoomBase(joinableName);                    
+                    joinable = new RoomBase(joinableName, messageService);                    
                     rooms.Add(joinable);
                 }
                 var addTask = hubContext.Groups.AddToGroupAsync(connectionId, joinableName);
@@ -53,9 +57,12 @@ namespace incognote.server
         class RoomBase : IRoom
         {
             private readonly HashSet<string> connectionIds = new HashSet<string>();
-            public RoomBase(string groupName)
+            private readonly IMessageService messageService;
+
+            public RoomBase(string groupName, IMessageService messageService)
             {
-                GroupName = groupName;                
+                GroupName = groupName;
+                this.messageService = messageService;
             }
             public bool CanJoin { get; set; } = true;
             public string GroupName { get; }
@@ -66,6 +73,11 @@ namespace incognote.server
             public bool HasConnection(string connectionId)
             {
                 return connectionIds.Contains(connectionId);
+            }
+
+            public void ToGroup(string message)
+            {
+                messageService.ToGroup(GroupName, message);
             }
         }
     }

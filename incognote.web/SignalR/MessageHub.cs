@@ -1,10 +1,7 @@
 ﻿using incognote.dal.Models;
 using incognote.server;
 using Microsoft.AspNetCore.SignalR;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace incognote.web.Hubs
 {
@@ -24,5 +21,13 @@ namespace incognote.web.Hubs
 
             await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
         }
+        [HubMethodName(Consts.PerformActionString)]
+        public async Task PerformAction(Message msg)
+        {
+            var room = roomProvider.ExistingRoom(Context.ConnectionId);
+
+            await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
+        }
+
     }
 }

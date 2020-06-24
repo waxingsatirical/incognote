@@ -27,6 +27,7 @@ namespace incognote.web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddTransient<IMessageService, MessageService>();
             services.AddSingleton<IRoomProvider, RoomProvider>();
 
             services.AddSignalR();

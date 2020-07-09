@@ -9,4 +9,8 @@
     <PackageReference Include="Reinforced.Typings" Version="1.5.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\incognote.dal\incognote.dal.csproj" />
+  </ItemGroup>
+
 </Project>

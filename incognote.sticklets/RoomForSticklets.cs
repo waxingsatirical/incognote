@@ -1,4 +1,5 @@
-﻿using incognote.server;
+﻿using incognote.dal.Models;
+using incognote.server;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +12,7 @@ namespace incognote.sticklets
         private readonly IMessageService messageService;
         private readonly IActionService actionService;
         private Game game;
+        private readonly List<Message> messages = new List<Message>();
 
         public RoomForSticklets(
             IIncomingService incomingService,
@@ -34,8 +36,8 @@ namespace incognote.sticklets
 
         public void StartGame()
         {
-            game = new Game(GroupName, actionService, messageService, connectionIds);
-            game.Start();
+            //game = new Game(GroupName, actionService, messageService, connectionIds);
+            //game.Start();
         }
         public bool PerformAction(string id, string connectionId, string payload)
         {

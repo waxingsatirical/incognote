@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using incognote.server.Change;
+using incognote.server.State;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,11 +60,14 @@ namespace incognote.server
         {
             private readonly HashSet<string> connectionIds = new HashSet<string>();
             private readonly IMessageService messageService;
+            private readonly MessageCollection messages;
 
             public RoomBase(string groupName, IMessageService messageService)
             {
                 GroupName = groupName;
                 this.messageService = messageService;
+                var messageChangeService = new MessageChangeService(messageService, groupName);
+                messages = new MessageCollection(messageChangeService);
             }
             public bool CanJoin { get; set; } = true;
             public string GroupName { get; }
@@ -77,7 +82,7 @@ namespace incognote.server
 
             public void ToGroup(string message)
             {
-                messageService.ToGroup(GroupName, message);
+                messages.Add(new dal.Models.Message() { Payload = message });
             }
         }
     }

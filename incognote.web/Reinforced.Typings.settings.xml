@@ -94,6 +94,7 @@
 	
 	<ItemGroup>
 		<RtAdditionalAssembly Include="incognote.dal"/>
+    <RtAdditionalAssembly Include="incognote.server"/>
 	</ItemGroup>
 	
 	<!--

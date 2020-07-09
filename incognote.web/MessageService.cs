@@ -1,7 +1,9 @@
 ﻿using incognote.dal.Models;
 using incognote.server;
+using incognote.server.Change;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace incognote.web
 {
@@ -32,12 +34,17 @@ namespace incognote.web
             hubContext.Clients.Client(connectionId).SendAsync(Consts.SetActionsString, actions);
         }
 
-        public void ToGroup(string groupName, string message)
+        public async Task ToGroup(string groupName, string message)
         {
             var msg = new Message() { Payload = message };
-            hubContext.Clients.Group(groupName).SendAsync(Consts.MessageReceivedString, msg);
+            await hubContext.Clients.Group(groupName).SendAsync(Consts.MessageReceivedString, msg);
         }
 
+        public async Task StatePost(string groupName, string[] path, string id, string payload)
+        {
+            var stateChange = new StateChange(path, id, payload);
+            await hubContext.Clients.All.SendAsync(Consts.StatePostString, stateChange);
+        }
 
     }
 }

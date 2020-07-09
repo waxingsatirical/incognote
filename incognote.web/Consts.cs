@@ -23,5 +23,9 @@ namespace incognote.web
         public const string SetActionString = nameof(SetActionString);
         [TsProperty(Constant = true)]
         public const string PerformActionString = nameof(PerformActionString);
+
+        [TsProperty(Constant = true)]
+        public const string StatePostString = nameof(StatePostString);
+        public const string StatePutString = nameof(StatePutString);
     }
 }

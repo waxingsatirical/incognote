@@ -31,7 +31,7 @@ namespace incognote.sticklets
         {
             actionService.SetInitialActionsForGroup(groupName, true);
             messageService.ToGroup(groupName, "New game started.");
-            incomingServiceListener.Subscribe()
+//            incomingServiceListener.Subscribe()
 
         }
     }

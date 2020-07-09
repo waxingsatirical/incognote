@@ -1,6 +1,8 @@
 ﻿using incognote.dal.Models;
 using incognote.server;
+using incognote.server.Change;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Threading.Tasks;
 
 namespace incognote.web.Hubs
@@ -19,7 +21,11 @@ namespace incognote.web.Hubs
             var room = roomProvider.ExistingRoom(Context.ConnectionId);
             room ??= roomProvider.JoinRoom(Context.ConnectionId);
 
-            await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
+            room.ToGroup(msg.Payload);
+
+            var stateChange = new StateChange(new[] { "messages", Guid.NewGuid().ToString() }, "someId", msg);
+            await Clients.All.SendAsync(Consts.StatePostString, stateChange);
+            //await Clients.All.SendAsync(Consts.MessageReceivedString, msg);
         }
         [HubMethodName(Consts.PerformActionString)]
         public async Task PerformAction(Message msg)
@@ -33,7 +39,7 @@ namespace incognote.web.Hubs
         {
             var room = roomProvider.ExistingRoom(Context.ConnectionId);
 
-            await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
+            //await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
         }
 
     }

@@ -39,4 +39,7 @@ export class ChatService {
   sendMessage(msg: IMessage) {
     this.hubConnection.invoke(Consts.SendMesssageString, msg);
   }
+  joinRoom() {
+    this.hubConnection.invoke(Consts.JoinString);
+  }
 }

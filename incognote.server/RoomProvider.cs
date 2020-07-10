@@ -1,4 +1,5 @@
 ﻿using incognote.server.Change;
+using incognote.server.SignalR;
 using incognote.server.State;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -21,11 +22,11 @@ namespace incognote.server
     {
         private readonly List<RoomBase> rooms;
         private readonly object roomsLocker = new object();
-        private readonly IHubContext<Hub> hubContext;
+        private readonly IServerHubContext hubContext;
         private readonly IMessageService messageService;
 
         public RoomProvider(
-            IHubContext<Hub> hubContext,
+            IServerHubContext hubContext,
             IMessageService messageService)
         {
             rooms = new List<RoomBase>();
@@ -45,6 +46,7 @@ namespace incognote.server
                 }
                 var addTask = hubContext.Groups.AddToGroupAsync(connectionId, joinableName);
                 addTask.Wait();
+                joinable.AddConnection(connectionId);
                 return joinable;
             }
         }
@@ -59,13 +61,11 @@ namespace incognote.server
         class RoomBase : IRoom
         {
             private readonly HashSet<string> connectionIds = new HashSet<string>();
-            private readonly IMessageService messageService;
             private readonly MessageCollection messages;
 
             public RoomBase(string groupName, IMessageService messageService)
             {
                 GroupName = groupName;
-                this.messageService = messageService;
                 var messageChangeService = new MessageChangeService(messageService, groupName);
                 messages = new MessageCollection(messageChangeService);
             }

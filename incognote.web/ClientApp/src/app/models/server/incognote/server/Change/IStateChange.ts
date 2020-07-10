@@ -5,6 +5,5 @@
 export interface IStateChange
 {
 	path: string[];
-	id: string;
 	payload: any;
 }

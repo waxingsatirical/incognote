@@ -4,12 +4,12 @@
     <div class="inbox_msg">
       <div class="mesgs">
         <div class="msg_history">
-          <div *ngFor="let msg of state.messages">
+          <div *ngFor="let item of state.messages | keyvalue">
             <div class="incoming_msg">              
               <div class="received_msg">
                 <div class="received_withd_msg">
                   <p>
-                    {{msg.payload}}
+                    {{item.value.payload}}
                   </p>
                 </div>
               </div>

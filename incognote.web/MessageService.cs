@@ -1,6 +1,7 @@
 ﻿using incognote.dal.Models;
 using incognote.server;
 using incognote.server.Change;
+using incognote.web.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace incognote.web
 {
     public class MessageService : IMessageService
     {
-        private readonly IHubContext<Hub> hubContext;
+        private readonly IHubContext<MessageHub> hubContext;
 
-        public MessageService(IHubContext<Hub> hubContext)
+        public MessageService(IHubContext<MessageHub> hubContext)
         {
             this.hubContext = hubContext;
         }
@@ -40,10 +41,10 @@ namespace incognote.web
             await hubContext.Clients.Group(groupName).SendAsync(Consts.MessageReceivedString, msg);
         }
 
-        public async Task StatePost(string groupName, string[] path, string id, string payload)
+        public async Task StatePost(string groupName, string[] path, object payload)
         {
-            var stateChange = new StateChange(path, id, payload);
-            await hubContext.Clients.All.SendAsync(Consts.StatePostString, stateChange);
+            var stateChange = new StateChange(path, payload);
+            await hubContext.Clients.Group(groupName).SendAsync(Consts.StatePostString, stateChange);
         }
 
     }

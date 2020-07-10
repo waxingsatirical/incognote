@@ -31,6 +31,8 @@ export class AppComponent {
   }
   private subscribeToEvents(): void {
 
+    this.chatService.connectionEstablished.subscribe(() => this.chatService.joinRoom()); //todo: room joined?
+
     this.chatService.messageReceived.subscribe((message: IMessage) => {
       this._ngZone.run(() => {
         if (message.clientUniqueId !== this.uniqueID) {
@@ -41,14 +43,18 @@ export class AppComponent {
 
     this.chatService.stateChangeReceived.subscribe((stateChange: IStateChange) => {
       this._ngZone.run(() => {
-        var target = this.state;
-        stateChange.path.forEach(x => {
+        var path = stateChange.path;
+        path.splice(0, 0, 'state');
+        var last = path.pop();
+        //build tree if necessary
+        var target = this;
+        path.forEach(x => {
           if (target[x] == undefined) {
             target[x] = {};
           }
           target = target[x];
         });
-        target = stateChange.payload;
+        target[last] = stateChange.payload;        
       });
     });
   }

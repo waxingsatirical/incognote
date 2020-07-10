@@ -1,11 +1,15 @@
 using incognote.server;
+using incognote.server.SignalR;
 using incognote.web.Hubs;
+using incognote.web.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace incognote.web
 {
@@ -29,6 +33,8 @@ namespace incognote.web
             });
             services.AddTransient<IMessageService, MessageService>();
             services.AddSingleton<IRoomProvider, RoomProvider>();
+
+            services.AddSingleton<IServerHubContext>((serviceProvider) => new ServerHubContext(serviceProvider.GetRequiredService<IHubContext<MessageHub>>()));
 
             services.AddSignalR();
 
@@ -78,6 +84,8 @@ namespace incognote.web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            
         }
     }
 }

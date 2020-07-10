@@ -12,7 +12,7 @@ namespace incognote.server
         void SetActions(string connectionId, IEnumerable<Action> actions);
         void SetActionForGroup(string groupName, Action action);
         void SetAction(string connectionId, Action action);
-        Task StatePost(string groupName, string[] path, string id, string payload);
+        Task StatePost(string groupName, string[] path, object payload);
     }
 
 }

@@ -19,13 +19,8 @@ namespace incognote.web.Hubs
         public async Task Post(Message msg)
         {
             var room = roomProvider.ExistingRoom(Context.ConnectionId);
-            room ??= roomProvider.JoinRoom(Context.ConnectionId);
 
             room.ToGroup(msg.Payload);
-
-            var stateChange = new StateChange(new[] { "messages", Guid.NewGuid().ToString() }, "someId", msg);
-            await Clients.All.SendAsync(Consts.StatePostString, stateChange);
-            //await Clients.All.SendAsync(Consts.MessageReceivedString, msg);
         }
         [HubMethodName(Consts.PerformActionString)]
         public async Task PerformAction(Message msg)
@@ -37,7 +32,7 @@ namespace incognote.web.Hubs
         [HubMethodName(Consts.JoinString)]
         public async Task Join()
         {
-            var room = roomProvider.ExistingRoom(Context.ConnectionId);
+            roomProvider.JoinRoom(Context.ConnectionId);
 
             //await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
         }

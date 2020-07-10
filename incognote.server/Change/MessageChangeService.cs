@@ -7,7 +7,7 @@ namespace incognote.server.Change
 {
     public interface IMessageChangeService
     {
-        void MessageAdded(Message m);
+        void MessageAdded(int id, Message m);
     }
 
     public class MessageChangeService : IMessageChangeService
@@ -21,11 +21,10 @@ namespace incognote.server.Change
             this.groupName = groupName;
         }
 
-        public async void MessageAdded(Message m)
+        public async void MessageAdded(int id, Message m)
         {
-            var path = new[] { nameof(State.State.Messages).ToLower() };
-            var id = Guid.NewGuid().ToString();
-            await messageService.StatePost(groupName, path, id, m.Payload);
+            var path = new[] { nameof(State.State.Messages).ToLower(), id.ToString("0000000000") };
+            await messageService.StatePost(groupName, path, m);
         }
     }
 }

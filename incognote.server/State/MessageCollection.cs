@@ -36,7 +36,7 @@ namespace incognote.server.State
             lock(messages)
             {
                 messages.Add(message);
-                messageChangeService.MessageAdded(message);
+                messageChangeService.MessageAdded(messages.Count, message);
             }
         }
     }

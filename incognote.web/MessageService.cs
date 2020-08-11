@@ -35,12 +35,6 @@ namespace incognote.web
             hubContext.Clients.Client(connectionId).SendAsync(Consts.SetActionsString, actions);
         }
 
-        public async Task ToGroup(string groupName, string message)
-        {
-            var msg = new Message() { Payload = message };
-            await hubContext.Clients.Group(groupName).SendAsync(Consts.MessageReceivedString, msg);
-        }
-
         public async Task StatePost(string groupName, string[] path, object payload)
         {
             var stateChange = new StateChange(path, payload);

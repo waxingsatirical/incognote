@@ -1,4 +1,5 @@
-﻿using incognote.server.Change;
+﻿using incognote.dal.Models;
+using incognote.server.Change;
 using incognote.server.SignalR;
 using incognote.server.State;
 using Microsoft.AspNetCore.SignalR;
@@ -16,7 +17,7 @@ namespace incognote.server
     public interface IRoom
     {
         public string GroupName { get; }
-        public void ToGroup(string message);
+        public void ToGroup(IncomingMessage message);
     }
     public class RoomProvider : IRoomProvider
     {
@@ -24,14 +25,17 @@ namespace incognote.server
         private readonly object roomsLocker = new object();
         private readonly IServerHubContext hubContext;
         private readonly IMessageService messageService;
+        private readonly IUserService userService;
 
         public RoomProvider(
             IServerHubContext hubContext,
-            IMessageService messageService)
+            IMessageService messageService,
+            IUserService userService)
         {
             rooms = new List<RoomBase>();
             this.hubContext = hubContext;
             this.messageService = messageService;
+            this.userService = userService;
         }
         public IRoom JoinRoom(string connectionId)
         {
@@ -41,7 +45,7 @@ namespace incognote.server
                 var joinableName = joinable?.GroupName ?? Guid.NewGuid().ToString();
                 if (joinable == null) //create new room
                 {
-                    joinable = new RoomBase(joinableName, messageService);                    
+                    joinable = new RoomBase(joinableName, messageService, userService);
                     rooms.Add(joinable);
                 }
                 var addTask = hubContext.Groups.AddToGroupAsync(connectionId, joinableName);
@@ -63,10 +67,10 @@ namespace incognote.server
             private readonly HashSet<string> connectionIds = new HashSet<string>();
             private readonly MessageCollection messages;
 
-            public RoomBase(string groupName, IMessageService messageService)
+            public RoomBase(string groupName, IMessageService messageService, IUserService userService)
             {
                 GroupName = groupName;
-                var messageChangeService = new MessageChangeService(messageService, groupName);
+                var messageChangeService = new MessageChangeService(messageService, userService, groupName);
                 messages = new MessageCollection(messageChangeService);
             }
             public bool CanJoin { get; set; } = true;
@@ -80,9 +84,9 @@ namespace incognote.server
                 return connectionIds.Contains(connectionId);
             }
 
-            public void ToGroup(string message)
+            public void ToGroup(IncomingMessage message)
             {
-                messages.Add(new dal.Models.Message() { Payload = message });
+                messages.Add(message);
             }
         }
     }

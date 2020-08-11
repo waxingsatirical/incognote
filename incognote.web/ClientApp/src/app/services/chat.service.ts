@@ -14,6 +14,7 @@ export class ChatService {
     this.initialiseConnection();
   }
 
+  private _connectionId: string;
   hubConnection: HubConnection;
   messageReceived = new EventEmitter<IMessage>();
   stateChangeReceived = new EventEmitter<IStateChange>();
@@ -24,7 +25,7 @@ export class ChatService {
     var bits = this.location.path().split('/');
 
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(`/${Consts.SignalRPath}` + (bits.length > 1 ? `?name=${bits[1]}` : ''))
+      .withUrl(`/${bits[0]}${Consts.SignalRPath}` + (bits.length > 1 ? `?name=${bits[1]}` : ''))
       .build();
 
     this.hubConnection.on(Consts.MessageReceivedString,
@@ -35,11 +36,17 @@ export class ChatService {
 
 
     this.hubConnection.start()
+      .then(() => this.hubConnection.invoke(Consts.ConnectionIdString))
+      .then((id: string) => this._connectionId = id)
       .then(() => this.connectionEstablished.emit(true));
     //TODO: log connection established
   }
 
-  sendMessage(msg: IMessage) {
+  connectionId(): string {
+    return this._connectionId;
+  }
+
+  sendMessage(msg: string) {
     this.hubConnection.invoke(Consts.SendMesssageString, msg);
   }
   joinRoom() {

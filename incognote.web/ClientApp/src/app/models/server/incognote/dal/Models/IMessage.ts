@@ -4,6 +4,7 @@
 
 export interface IMessage
 {
-	clientUniqueId: string;
+	name: string;
+	connectionId: string;
 	payload: string;
 }

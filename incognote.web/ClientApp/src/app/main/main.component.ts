@@ -13,7 +13,6 @@ import { IStateChange } from '../models/server/incognote/server/Change/IStateCha
 })  
 export class MainComponent {
   text = '';
-  uniqueID: string = new Date().getTime().toString();
   state = new State();
   messages = new Array<IMessage>();
   constructor(
@@ -22,12 +21,8 @@ export class MainComponent {
   ) {
     this.subscribeToEvents();
   }
-  sendMessage(): void {
-    const msg = new Message();
-    msg.clientUniqueId = this.uniqueID;
-    msg.payload = this.text;
-    //this.messages.push(msg);
-    this.chatService.sendMessage(msg);
+  sendMessage(): void {    
+    this.chatService.sendMessage(this.text);
     this.text = '';
   }
   private subscribeToEvents(): void {
@@ -36,9 +31,7 @@ export class MainComponent {
 
     this.chatService.messageReceived.subscribe((message: IMessage) => {
       this._ngZone.run(() => {
-        if (message.clientUniqueId !== this.uniqueID) {
           this.messages.push(message);
-        }
       });
     });
 

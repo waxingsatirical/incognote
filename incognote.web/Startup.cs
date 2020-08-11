@@ -32,6 +32,7 @@ namespace incognote.web
                 configuration.RootPath = "ClientApp/dist";
             });
             services.AddTransient<IMessageService, MessageService>();
+            services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IRoomProvider, RoomProvider>();
 
             services.AddSingleton<IServerHubContext>((serviceProvider) => new ServerHubContext(serviceProvider.GetRequiredService<IHubContext<MessageHub>>()));
@@ -69,7 +70,7 @@ namespace incognote.web
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
 
-                endpoints.MapHub<MessageHub>(Consts.SignalRPath);
+                endpoints.MapHub<MessageHub>("/" + Consts.SignalRPath);
             });
 
             app.UseSpa(spa =>

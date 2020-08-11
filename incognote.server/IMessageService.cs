@@ -7,7 +7,6 @@ namespace incognote.server
 {
     public interface IMessageService
     {
-        Task ToGroup(string groupName, string message);
         void SetActionsForGroup(string groupName, IEnumerable<Action> actions);
         void SetActions(string connectionId, IEnumerable<Action> actions);
         void SetActionForGroup(string groupName, Action action);

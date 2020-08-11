@@ -4,7 +4,9 @@
 
 export abstract class Consts
 {
-	public static SignalRPath: string = `/MessageHub`;
+	public static SignalRPath: string = `MessageHub`;
+	public static NameParameterString: string = `name`;
+	public static ConnectionIdString: string = `ConnectionIdString`;
 	public static MessageReceivedString: string = `MessageReceivedString`;
 	public static JoinString: string = `JoinString`;
 	public static SendMesssageString: string = `SendMesssageString`;

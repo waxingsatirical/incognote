@@ -10,7 +10,11 @@ namespace incognote.web
     public static class Consts
     {
         [TsProperty(Constant = true)]
-        public const string SignalRPath = "/MessageHub";
+        public const string SignalRPath = "MessageHub";
+        [TsProperty(Constant = true)]
+        public const string NameParameterString = "name";
+        [TsProperty(Constant = true)]
+        public const string ConnectionIdString = nameof(ConnectionIdString);
         [TsProperty(Constant = true)]
         public const string MessageReceivedString = nameof(MessageReceivedString);
         [TsProperty(Constant = true)]

@@ -6,16 +6,16 @@ using System.Linq;
 
 namespace incognote.server.State
 {
-    public class MessageCollection : IEnumerable<Message>
+    public class MessageCollection : IEnumerable<IncomingMessage>
     {
-        private readonly List<Message> messages = new List<Message>();
+        private readonly List<IncomingMessage> messages = new List<IncomingMessage>();
         private readonly IMessageChangeService messageChangeService;
 
         public MessageCollection(IMessageChangeService messageChangeService)
         {
             this.messageChangeService = messageChangeService;
         }
-        public IEnumerator<Message> GetEnumerator()
+        public IEnumerator<IncomingMessage> GetEnumerator()
         {
             lock(messages)
             {
@@ -31,7 +31,7 @@ namespace incognote.server.State
             }
         }
 
-        public void Add(Message message)
+        public void Add(IncomingMessage message)
         {
             lock(messages)
             {

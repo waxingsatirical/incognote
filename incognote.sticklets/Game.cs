@@ -30,7 +30,7 @@ namespace incognote.sticklets
         internal void Start()
         {
             actionService.SetInitialActionsForGroup(groupName, true);
-            messageService.ToGroup(groupName, "New game started.");
+            //messageService.ToGroup(groupName, "New game started.");
 //            incomingServiceListener.Subscribe()
 
         }

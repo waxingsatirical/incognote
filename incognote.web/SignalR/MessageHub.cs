@@ -1,8 +1,6 @@
 ﻿using incognote.dal.Models;
 using incognote.server;
-using incognote.server.Change;
 using Microsoft.AspNetCore.SignalR;
-using System;
 using System.Threading.Tasks;
 
 namespace incognote.web.Hubs
@@ -10,21 +8,25 @@ namespace incognote.web.Hubs
     public class MessageHub : Hub
     {
         private readonly IRoomProvider roomProvider;
+        private readonly IUserService userService;
 
-        public override Task OnConnectedAsync()
-        {
-            return base.OnConnectedAsync();
-        }
-        public MessageHub(IRoomProvider roomProvider)
+        public MessageHub(IRoomProvider roomProvider, IUserService userService)
         {
             this.roomProvider = roomProvider;
+            this.userService = userService;
+        }
+        public override Task OnConnectedAsync()
+        {
+            var name = Context.GetHttpContext().Request.Query[Consts.NameParameterString].ToString();
+            userService.Add(Context.ConnectionId, name);
+            return base.OnConnectedAsync();
         }
         [HubMethodName(Consts.SendMesssageString)]
-        public async Task Post(Message msg)
+        public async Task Post(string payload)
         {
             var room = roomProvider.ExistingRoom(Context.ConnectionId);
 
-            room.ToGroup(msg.Payload);
+            room.ToGroup(new IncomingMessage(Context.ConnectionId, payload));
         }
         [HubMethodName(Consts.PerformActionString)]
         public async Task PerformAction(Message msg)
@@ -40,6 +42,10 @@ namespace incognote.web.Hubs
 
             //await Clients.Groups(room.GroupName).SendAsync(Consts.MessageReceivedString, msg);
         }
-
+        [HubMethodName(Consts.ConnectionIdString)]
+        public string ConnectionId()
+        {
+            return Context.ConnectionId;
+        }
     }
 }

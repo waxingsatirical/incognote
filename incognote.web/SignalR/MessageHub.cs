@@ -11,6 +11,10 @@ namespace incognote.web.Hubs
     {
         private readonly IRoomProvider roomProvider;
 
+        public override Task OnConnectedAsync()
+        {
+            return base.OnConnectedAsync();
+        }
         public MessageHub(IRoomProvider roomProvider)
         {
             this.roomProvider = roomProvider;

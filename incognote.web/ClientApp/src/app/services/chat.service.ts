@@ -20,8 +20,11 @@ export class ChatService {
   connectionEstablished = new EventEmitter<boolean>();
 
   initialiseConnection() {
+
+    var bits = this.location.path().split('/');
+
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(this.location.path() + Consts.SignalRPath)
+      .withUrl(`/${Consts.SignalRPath}` + (bits.length > 1 ? `?name=${bits[1]}` : ''))
       .build();
 
     this.hubConnection.on(Consts.MessageReceivedString,

@@ -17,13 +17,7 @@ namespace incognote.dal.Models
         public string Payload { get; }
     }
     [TsInterface]
-    public interface IMessage
-    {
-        string Name { get; }
-        string ConnectionId { get; }
-        string Payload { get; }
-    }
-    public class Message : IMessage
+    public class Message
     {
         private readonly IncomingMessage incoming;
 

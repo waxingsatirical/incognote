@@ -1,6 +1,5 @@
 import { Component, NgZone } from '@angular/core';
 import { IMessage } from '../models/server/incognote/dal/Models/IMessage';
-import { Message } from '../models/Message'
 import { ChatService } from '../services/chat.service';
 import { State } from '../models/server/incognote/server/State/State';
 import { IStateChange } from '../models/server/incognote/server/Change/IStateChange';

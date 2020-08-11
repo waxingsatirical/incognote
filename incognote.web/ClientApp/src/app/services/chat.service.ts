@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
-import { Message } from '../models/Message';
 import { IMessage } from '../models/server/incognote/dal/Models/IMessage';
 import { Consts } from '../models/server/incognote/web/Consts';
 import { IStateChange } from '../models/server/incognote/server/Change/IStateChange';

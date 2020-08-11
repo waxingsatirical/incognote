@@ -30,7 +30,7 @@ namespace incognote.server.Change
         {
             var path = new[] { nameof(State.State.Messages).ToLower(), id.ToString("0000000000") };
             var message = new Message(m, userService.Name(m.ConnectionId));
-            await messageService.StatePost(groupName, path, m);
+            await messageService.StatePost(groupName, path, message);
         }
     }
 }

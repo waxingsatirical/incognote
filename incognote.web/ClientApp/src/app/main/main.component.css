@@ -122,13 +122,15 @@ img {
   background: #ebebeb;
 }
 
-.incoming_msg_img {
-  display: inline-block;
+.msg div {
+    margin: 1px;
 }
+
+
 
 .received_msg {
   display: inline-block;
-  padding: 0 0 0 0px;
+  padding: 0 0 1 1px;
   vertical-align: top;
   width: 92%;
 }

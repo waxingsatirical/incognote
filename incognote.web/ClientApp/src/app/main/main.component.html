@@ -5,14 +5,23 @@
       <div class="mesgs">
         <div class="msg_history">
           <div *ngFor="let item of state.messages | keyvalue">
-            <div class="incoming_msg">
-              <div class="received_msg">
+            <div class="msg">
+              <div *ngIf="item.value.connectionId == chatService.connectionId(); else receivedMessage" class="sent_msg">
                 <div class="received_withd_msg">
                   <p>
-                    {{item.value.name}}: {{item.value.payload}}
+                    {{item.value.payload}}
                   </p>
                 </div>
               </div>
+              <ng-template #receivedMessage>
+                <div class="received_msg">
+                  <div class="received_withd_msg">
+                    <p>
+                      {{item.value.name}}: {{item.value.payload}}
+                    </p>
+                  </div>
+                </div>
+              </ng-template>
             </div>
           </div>
         </div>

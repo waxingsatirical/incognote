@@ -26,16 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\app\models\Message.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\incognote.dal\incognote.dal.csproj" />
     <ProjectReference Include="..\incognote.server\incognote.server.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\models\Message.ts" />
   </ItemGroup>
 
   <ItemGroup>

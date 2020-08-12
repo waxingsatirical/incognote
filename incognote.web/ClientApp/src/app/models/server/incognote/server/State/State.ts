@@ -7,4 +7,5 @@ import { IMessage } from '../../dal/Models/IMessage';
 export class State
 {
 	public messages: IMessage[];
+	public statuses: any[];
 }

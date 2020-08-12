@@ -66,18 +66,28 @@ namespace incognote.server
         {
             private readonly HashSet<string> connectionIds = new HashSet<string>();
             private readonly MessageCollection messages;
+            private readonly StatusCollection statuses;
+            private readonly IUserService userService;
 
-            public RoomBase(string groupName, IMessageService messageService, IUserService userService)
+            public RoomBase(
+                string groupName, 
+                IMessageService messageService, 
+                IUserService userService)
             {
                 GroupName = groupName;
-                var messageChangeService = new MessageChangeService(messageService, userService, groupName);
+                this.userService = userService;
+                var messageChangeService = new MessageChangeService(messageService, userService, groupName);//TODO: factory for these please
                 messages = new MessageCollection(messageChangeService);
+                var statusChangeService = new StatusChangeService(messageService, groupName);
+                statuses = new StatusCollection(statusChangeService);
             }
             public bool CanJoin { get; set; } = true;
             public string GroupName { get; }
             public void AddConnection(string connectionId)
             {
                 connectionIds.Add(connectionId);
+                var name = userService.Name(connectionId);
+                statuses.Add(new Status($"{name} has joined the room"));
             }
             public bool HasConnection(string connectionId)
             {

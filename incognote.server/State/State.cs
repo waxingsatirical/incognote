@@ -10,5 +10,6 @@ namespace incognote.server.State
     public class State
     {
         public IEnumerable<Message> Messages { get; }
+        public IEnumerable<Status> Statuses { get; }
     }
 }

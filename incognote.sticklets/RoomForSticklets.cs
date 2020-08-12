@@ -8,11 +8,9 @@ namespace incognote.sticklets
     public class RoomForSticklets : IIncomingServiceCaller
     {
         private readonly HashSet<string> connectionIds = new HashSet<string>();
-        private readonly IIncomingService incomingService;
-        private readonly IMessageService messageService;
+        private readonly IIncomingService incomingServic
         private readonly IActionService actionService;
         private Game game;
-        private readonly List<Message> messages = new List<Message>();
 
         public RoomForSticklets(
             IIncomingService incomingService,

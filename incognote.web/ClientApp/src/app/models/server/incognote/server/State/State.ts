@@ -3,9 +3,11 @@
 //     the code is regenerated.
 
 import { IMessage } from '../../dal/Models/IMessage';
+import { IAction } from '../IAction';
 
 export class State
 {
 	public messages: IMessage[];
 	public statuses: any[];
+	public actions: IAction[];
 }

@@ -11,5 +11,6 @@ namespace incognote.server.State
     {
         public IEnumerable<Message> Messages { get; }
         public IEnumerable<Status> Statuses { get; }
+        public IEnumerable<Action> Actions { get; }
     }
 }

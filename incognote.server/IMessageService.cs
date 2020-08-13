@@ -7,11 +7,8 @@ namespace incognote.server
 {
     public interface IMessageService
     {
-        void SetActionsForGroup(string groupName, IEnumerable<Action> actions);
-        void SetActions(string connectionId, IEnumerable<Action> actions);
-        void SetActionForGroup(string groupName, Action action);
-        void SetAction(string connectionId, Action action);
-        Task StatePost(string groupName, string[] path, object payload);
+        Task StatePostAsyncForGroup(string groupName, string[] path, object payload);
+        Task StatePostAsync(string connectionId, string[] path, object payload);
     }
 
 }

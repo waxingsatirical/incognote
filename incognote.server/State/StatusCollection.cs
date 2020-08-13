@@ -36,7 +36,7 @@ namespace incognote.server.State
             lock (statuses)
             {
                 statuses.Add(status);
-                statusChangeService.StatusAdded(statuses.Count, status);
+                statusChangeService.StatusAddedAsync(statuses.Count, status);
             }
         }
     }

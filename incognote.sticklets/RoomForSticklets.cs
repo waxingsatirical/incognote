@@ -8,20 +8,13 @@ namespace incognote.sticklets
     public class RoomForSticklets : IIncomingServiceCaller
     {
         private readonly HashSet<string> connectionIds = new HashSet<string>();
-        private readonly IIncomingService incomingServic
-        private readonly IActionService actionService;
+        private readonly IIncomingService incomingService;
         private Game game;
 
-        public RoomForSticklets(
-            IIncomingService incomingService,
-            IMessageService messageService,
-            IActionService actionService
-            )
+        public RoomForSticklets(IIncomingService incomingService)
         {
             GroupName = Guid.NewGuid().ToString();
             this.incomingService = incomingService;
-            this.messageService = messageService;
-            this.actionService = actionService;
         }
 
         public string GroupName { get; }
@@ -29,7 +22,6 @@ namespace incognote.sticklets
         public void Join(string connectionId)
         {
             connectionIds.Add(connectionId);
-            actionService.SetInitialActions(connectionId, game != null);
         }
 
         public void StartGame()
